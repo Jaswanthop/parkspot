@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: parkspot
+    runtime: node
+    plan: free
+    region: oregon
+    branch: main
+    autoDeploy: true
+    buildCommand: npm ci --prefix server --omit=dev && npm ci --prefix client --include=dev && npm run build --prefix client
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 7d
+      - key: ADMIN_EMAIL
+        value: admin@parkspot.dev
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: ADMIN_NAME
+        value: ParkSpot Admin
+      - key: SEED_DEMO
+        value: "false"
